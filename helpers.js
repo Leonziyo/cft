@@ -64,7 +64,12 @@ async function UserData(files, options = {}) {
             ];
         }
         else if(match = line.match(/=@Param\(([^()]+)\)/)) {
-            return line.replace(/@Param\(.+\)/, `'${params[match[1]]}'\n`);
+            const param = params[match[1]];
+            const result = Array.isArray(param) ?
+                `(${param.join(' ')})`
+                :
+                `'${param}'`;
+            return line.replace(/@Param\(.+\)/, `${result}\n`);
         }
 
         return `${line} \n`;
